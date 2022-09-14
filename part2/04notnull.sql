@@ -15,6 +15,13 @@ insert into user(name) values('wangwu');
 
 explain select * from user where id!=1;
 
+explain select * from user where id!=1 or id is null;
+
+EXPLAIN
+select * from user where id is null
+UNION
+select * from user where id=1;
+
 
 
 
