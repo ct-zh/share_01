@@ -1,5 +1,6 @@
 -- 创建表格
-drop table incr_row_test
+drop table incr_row_test;
+create table incr_row_test
 (
     id   int not null auto_increment,
     name varchar(10) UNIQUE,
