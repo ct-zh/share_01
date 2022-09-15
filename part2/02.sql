@@ -1,3 +1,4 @@
+-- decimal 精度一定要定义准确
 create table decimal_test(col_1 int, col2 decimal(5,1));
 
 insert into decimal_test values(1,10.1),(2,10.11),(3,10.16);

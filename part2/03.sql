@@ -1,3 +1,4 @@
+-- unsigned 相减报错
 create table int_test_2 (col_1 int unsigned, col_2 int unsigned);
 
 insert into int_test_2 values(1,2);

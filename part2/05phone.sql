@@ -1,3 +1,5 @@
+-- 手机号
+
 drop table phone_test;
 create table phone_test(
     id int auto_increment,
@@ -12,7 +14,7 @@ insert into phone_test(name, phone) values ("李四", 14444444444);
 insert into phone_test(name, phone) values ("王五", 15555555555);
 
 select * from phone_test;
-
+-- 猜猜这里会不会走索引
 explain select name from phone_test where phone=14444444444;
 
 

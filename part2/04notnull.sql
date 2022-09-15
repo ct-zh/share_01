@@ -1,3 +1,5 @@
+-- not null 的坑
+
 drop table user;
 create table user (
     id int,

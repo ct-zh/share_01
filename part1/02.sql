@@ -1,4 +1,5 @@
---
+-- 自增id的坑 2
+
 drop table t1;
 create table t1
 (

@@ -1,3 +1,5 @@
+-- int（20）里的20代表什么意思 + 填充零
+
 drop table int_test;
 create table int_test
 (

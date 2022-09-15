@@ -1,3 +1,5 @@
+-- 自增id的坑 1
+
 -- 创建表格
 drop table incr_row_test;
 create table incr_row_test
