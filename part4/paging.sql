@@ -1,4 +1,4 @@
--- 超大分页查询
+-- 超大分页查询1   todo 补充
 drop table `limit_optimize_tbl`;
 CREATE TABLE `limit_optimize_tbl` (
       `id` int(11) NOT NULL AUTO_INCREMENT,

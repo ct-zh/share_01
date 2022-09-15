@@ -1,4 +1,4 @@
-
+-- 低区分度的字段真的不适合建立索引吗？
 drop table messages;
 create table messages(
     `id` bigint unsigned auto_increment,

@@ -1,3 +1,6 @@
+-- MySQL大数据量查询
+-- 当存在主键 asc排序和 limit N N的值很小时，可能出现的bug
+
 drop table `order_info`;
 
 CREATE TABLE `order_info`(
