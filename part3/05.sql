@@ -31,7 +31,7 @@ DELIMITER ;
 call add_order_info();
 
 
-explain select * from order_info where uid = 2999971 order by id asc limit 1;
+explain select * from order_info where uid = 2999971 order by id asc limit 10;
 
 
 SET optimizer_trace="enabled=on";        -- 打开 optimizer_trace

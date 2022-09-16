@@ -8,6 +8,8 @@ create table multi_col_index_2
     unique key (`id`)
 ) engine = innodb;
 
+-- idx_class_name (class, name)
+
 insert into multi_col_index_2(class, name,  id) VALUES ("1班", "刘德华", 201);
 insert into multi_col_index_2(class, name,  id) VALUES ("1班", "张学友", 202);
 insert into multi_col_index_2(class, name,  id) VALUES ("1班", "黎明", 203);
