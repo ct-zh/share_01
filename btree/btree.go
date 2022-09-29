@@ -42,7 +42,7 @@ type BPTree struct {
 // BPFullNode 页结构
 type BPFullNode struct {
 	isLeaf   bool        // 是否是叶子节点？
-	leafNode *bPLeafNode // 页存储的具体数据；Innodb的非叶子节点是不存数据的，此时为空；叶子节点是存数据的，不为空；
+	leafNode *bPLeafNode // 页存储的具体数据；Innodb的非叶子节点是不存数据的，为nil；叶子节点是存数据的，不为nil；
 
 	nodeCatalogue
 

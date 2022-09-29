@@ -2,57 +2,57 @@ package btree
 
 // recursiveInsert 递归插入
 // beInsertedElement 被插入的页
-// key 插入id
+// id 插入id
 // posAtParent
 // Parent
 // data 插入数据
-func (b *BPTree) recursiveInsert(beInsertedElement Position, key int, posAtParent int, Parent Position, data interface{}) (Position, error) {
-	var InsertIndex int
-	var Sibling Position
+func (b *BPTree) recursiveInsert(beInsertedElement Position, id int, posAtParent int, parent Position, data interface{}) (Position, error) {
+	var insertIndex int
+	var sibling Position
 
 	// 查找分支
-	InsertIndex = 0
-	for InsertIndex < beInsertedElement.keyNum && key >= beInsertedElement.key[InsertIndex] {
-		if key == beInsertedElement.key[InsertIndex] { // 重复值不插入
+	insertIndex = 0
+	for insertIndex < beInsertedElement.keyNum && id >= beInsertedElement.key[insertIndex] {
+		if id == beInsertedElement.key[insertIndex] { // 重复值不插入
 			return beInsertedElement, AlreadyExistsErr
 		}
-		InsertIndex++
+		insertIndex++
 	}
 
 	//key必须大于被插入节点的最小元素，才能插入到此节点，故需回退一步
-	if InsertIndex != 0 && beInsertedElement.isLeaf == false {
-		InsertIndex--
+	if insertIndex != 0 && beInsertedElement.isLeaf == false {
+		insertIndex--
 	}
 
 	if beInsertedElement.isLeaf == true {
-		beInsertedElement = b.insertData(Parent, beInsertedElement, key, posAtParent, InsertIndex, data)
+		beInsertedElement = b.insertData(parent, beInsertedElement, id, posAtParent, insertIndex, data)
 	} else {
-		p, err := b.recursiveInsert(beInsertedElement.children[InsertIndex], key, InsertIndex, beInsertedElement, data)
+		p, err := b.recursiveInsert(beInsertedElement.children[insertIndex], id, insertIndex, beInsertedElement, data)
 		if err != nil {
 			return nil, err
 		}
-		beInsertedElement.children[InsertIndex] = p
+		beInsertedElement.children[insertIndex] = p
 	}
 
 	// 触发了页分裂
 	if beInsertedElement.keyNum > M {
-		if Parent == nil {
+		if parent == nil {
 			// 根节点直接 分裂
-			beInsertedElement = b.splitNode(Parent, beInsertedElement, posAtParent)
+			beInsertedElement = b.splitNode(parent, beInsertedElement, posAtParent)
 		} else {
-			Sibling = findSibling(Parent, posAtParent)
-			if Sibling != nil {
+			sibling = findSibling(parent, posAtParent)
+			if sibling != nil {
 				// 将T的一个元素（Key或者Child）移动的Sibing中
-				b.moveElement(beInsertedElement, Sibling, Parent, posAtParent, 1)
+				b.moveElement(beInsertedElement, sibling, parent, posAtParent, 1)
 			} else {
 				// 分裂节点
-				beInsertedElement = b.splitNode(Parent, beInsertedElement, posAtParent)
+				beInsertedElement = b.splitNode(parent, beInsertedElement, posAtParent)
 			}
 		}
 	}
 
-	if Parent != nil {
-		Parent.key[posAtParent] = beInsertedElement.key[0]
+	if parent != nil {
+		parent.key[posAtParent] = beInsertedElement.key[0]
 	}
 
 	return beInsertedElement, nil
@@ -170,22 +170,27 @@ func (b *BPTree) insertNode(Parent Position, X Position, posAtParent int) Positi
 
 // insertData 插入data
 // insertIndex data要插入的位置，j可由查找得到
-func (b *BPTree) insertData(Parent Position, X Position, key int, posAtParent int, insertIndex int, data interface{}) Position {
-	k := X.keyNum - 1
+func (b *BPTree) insertData(parent Position, x Position, id int, posAtParent int, insertIndex int, data interface{}) Position {
+	//fmt.Printf("parent: %+v current: %+v id: %d posAtParent: %d insertIndex %d data: %+v \n",
+	//	parent, x, id, posAtParent, insertIndex, data)
+
+	k := x.keyNum - 1
 	for k >= insertIndex {
-		X.key[k+1] = X.key[k]
-		X.leafNode.data[k+1] = X.leafNode.data[k]
+		x.key[k+1] = x.key[k]
+		x.leafNode.data[k+1] = x.leafNode.data[k]
 		k--
 	}
 
-	X.key[insertIndex] = key
-	X.leafNode.data[insertIndex] = data
-	if Parent != nil {
-		Parent.key[posAtParent] = X.key[0] //可能min_key 已发生改变
+	x.key[insertIndex] = id
+	x.leafNode.data[insertIndex] = data
+	if parent != nil {
+		parent.key[posAtParent] = x.key[0] //可能min_key 已发生改变
 	}
 
-	X.keyNum++
-	return X
+	x.keyNum++
+
+	//fmt.Printf("x: %+v \n", x)
+	return x
 }
 
 func (b *BPTree) moveElement(src Position, dst Position, parent Position, posAtParent int, eNum int) Position {

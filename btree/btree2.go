@@ -11,8 +11,12 @@ func New() *BPTree {
 }
 
 // Insert 往表里面写数据  key=主键id  data=表数据
-func (b *BPTree) Insert(id int, data interface{}) (Position, error) {
-	return b.recursiveInsert(b.root, id, 0, nil, data)
+func (b *BPTree) Insert(id int, data interface{}) (p Position, err error) {
+	p, err = b.recursiveInsert(b.root, id, 0, nil, data)
+	if err == nil && id > b.keyMax { // 维护一下最大id
+		b.keyMax = id
+	}
+	return
 }
 
 // Delete 删除数据，目前支持主键删除
