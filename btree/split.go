@@ -6,7 +6,7 @@ import "fmt"
 // parent: 父节点
 // beSplitNode: 当前分裂的节点
 // i: 当前节点在父节点的位置
-func (b *BPTree) splitNode(parent Position, beSplitNode Position, i int) Position {
+func (b *bPTree) splitNode(parent Position, beSplitNode Position, i int) Position {
 	fmt.Printf("start split: parent: %v currentNode: %v key: %d\n", parent, beSplitNode, i)
 
 	newNode := mallocNewNode(beSplitNode.isLeaf) // 新分裂出来的叶子节点
@@ -45,7 +45,7 @@ func (b *BPTree) splitNode(parent Position, beSplitNode Position, i int) Positio
 }
 
 // MergeNode 合并节点,X少于M/2关键字，S有大于或等于M/2个关键字
-func (b *BPTree) mergeNode(Parent Position, X Position, S Position, i int) Position {
+func (b *bPTree) mergeNode(Parent Position, X Position, S Position, i int) Position {
 	var Limit int
 
 	// S的关键字数目大于M/2

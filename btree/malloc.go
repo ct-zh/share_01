@@ -1,10 +1,10 @@
 package btree
 
-func mallocNewNode(isLeaf bool) *BPFullNode {
-	var newNode *BPFullNode
+func mallocNewNode(isLeaf bool) *bPFullNode {
+	var newNode *bPFullNode
 	if isLeaf == true {
 		newLeaf := mallocNewLeaf()
-		newNode = &BPFullNode{
+		newNode = &bPFullNode{
 			nodeCatalogue: nodeCatalogue{
 				keyNum:   0,
 				key:      make([]int, M+1), // M+1是因为可能暂时出现节点key数量大于M的情况 此时触发页分裂
@@ -18,11 +18,11 @@ func mallocNewNode(isLeaf bool) *BPFullNode {
 			},
 		}
 	} else {
-		newNode = &BPFullNode{
+		newNode = &bPFullNode{
 			nodeCatalogue: nodeCatalogue{
 				keyNum:   0,
 				key:      make([]int, M+1), // M+1是因为可能暂时出现节点key数量大于M的情况 此时触发页分裂
-				children: make([]*BPFullNode, M+1),
+				children: make([]*bPFullNode, M+1),
 			},
 			isLeaf:   false,
 			leafNode: nil,

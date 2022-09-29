@@ -26,21 +26,23 @@ package btree
 
 // M MySQL的填充因子为15/16，这里简化一下逻辑，假设每条数据为1kB大小
 // 也就是说达到15条数据时此页已满，达到M+1也就是16条数据时触发页分裂
-const M = 15
+const M = 6
 
 // LimitM2 说明该页数据不足一半，触发页合并
 const LimitM2 = (M + 1) / 2
 const IntMin = -1 // 还未写入的slot，id值默认为-1
 
-type BPTree struct {
+type bPTree struct {
 	keyMax int         // 当前tree的最大关键字；也就是AUTO_INCREMENT的值
 	width  int         // 阶，也就是树的高度
-	root   *BPFullNode // 根节点
-	ptr    *BPFullNode
+	root   *bPFullNode // 根节点
+	ptr    *bPFullNode
+
+	cfg *Cfg
 }
 
-// BPFullNode 页结构
-type BPFullNode struct {
+// bPFullNode 页结构
+type bPFullNode struct {
 	isLeaf   bool        // 是否是叶子节点？
 	leafNode *bPLeafNode // 页存储的具体数据；Innodb的非叶子节点是不存数据的，为nil；叶子节点是存数据的，不为nil；
 
@@ -49,11 +51,11 @@ type BPFullNode struct {
 	point // 每个页都存储了前一页和后一页的指针
 }
 
-type Position *BPFullNode
+type Position *bPFullNode
 
 // BPLeafNode 叶子节点的数据
 type bPLeafNode struct {
-	Next *BPFullNode
+	Next *bPFullNode
 	data map[int]interface{} // 详细数据 key=id value=具体的数据;实际Innodb这里不是简单存储了数据，而是以链表的形式存储了多版本号的数据;
 }
 
@@ -61,13 +63,17 @@ type bPLeafNode struct {
 type nodeCatalogue struct {
 	keyNum   int           // 当前页目录的大小,当前页的最大id和最小id通过ta求出来
 	key      []int         // 当前页的页目录,int 值为主键id的值
-	children []*BPFullNode // 子节点;
+	children []*bPFullNode // 子节点;
 }
 
 // point 页的指针，每个层级的页组成链表结构
 type point struct {
-	prev *BPFullNode
-	next *BPFullNode
+	prev *bPFullNode
+	next *bPFullNode
+}
+
+type Cfg struct {
+	PageMaxSize int
 }
 
 var NotExistErr error

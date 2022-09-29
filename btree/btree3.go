@@ -6,7 +6,7 @@ package btree
 // posAtParent
 // Parent
 // data 插入数据
-func (b *BPTree) recursiveInsert(beInsertedElement Position, id int, posAtParent int, parent Position, data interface{}) (Position, error) {
+func (b *bPTree) recursiveInsert(beInsertedElement Position, id int, posAtParent int, parent Position, data interface{}) (Position, error) {
 	var insertIndex int
 	var sibling Position
 
@@ -58,7 +58,7 @@ func (b *BPTree) recursiveInsert(beInsertedElement Position, id int, posAtParent
 	return beInsertedElement, nil
 }
 
-func (b *BPTree) recursiveDelete(beRemovedElement Position, key int, posAtParent int, Parent Position) (Position, error) {
+func (b *bPTree) recursiveDelete(beRemovedElement Position, key int, posAtParent int, Parent Position) (Position, error) {
 	var deleteIndex int
 	var Sibling Position
 	var NeedAdjust bool
@@ -144,7 +144,7 @@ func (b *BPTree) recursiveDelete(beRemovedElement Position, key int, posAtParent
 // 插入节点
 // insertNode 当要对X插入data的时候，i是X在Parent的位置，
 // 当要对Parent插入X节点的时候，posAtParent是要插入的位置
-func (b *BPTree) insertNode(Parent Position, X Position, posAtParent int) Position {
+func (b *bPTree) insertNode(Parent Position, X Position, posAtParent int) Position {
 	if X.isLeaf == true {
 		if posAtParent > 0 {
 			Parent.children[posAtParent-1].leafNode.Next = X
@@ -170,7 +170,7 @@ func (b *BPTree) insertNode(Parent Position, X Position, posAtParent int) Positi
 
 // insertData 插入data
 // insertIndex data要插入的位置，j可由查找得到
-func (b *BPTree) insertData(parent Position, x Position, id int, posAtParent int, insertIndex int, data interface{}) Position {
+func (b *bPTree) insertData(parent Position, x Position, id int, posAtParent int, insertIndex int, data interface{}) Position {
 	//fmt.Printf("parent: %+v current: %+v id: %d posAtParent: %d insertIndex %d data: %+v \n",
 	//	parent, x, id, posAtParent, insertIndex, data)
 
@@ -193,7 +193,7 @@ func (b *BPTree) insertData(parent Position, x Position, id int, posAtParent int
 	return x
 }
 
-func (b *BPTree) moveElement(src Position, dst Position, parent Position, posAtParent int, eNum int) Position {
+func (b *bPTree) moveElement(src Position, dst Position, parent Position, posAtParent int, eNum int) Position {
 	var TmpKey int
 	var data interface{}
 	var Child Position
@@ -271,7 +271,7 @@ func (b *BPTree) moveElement(src Position, dst Position, parent Position, posAtP
 }
 
 // removeElement 两个参数X posAtParent 有些重复 posAtParent可以通过X的最小关键字查找得到
-func (b *BPTree) removeElement(isData bool, Parent Position, X Position, posAtParent int, deleteIndex int) Position {
+func (b *bPTree) removeElement(isData bool, Parent Position, X Position, posAtParent int, deleteIndex int) Position {
 
 	var k, keyNum int
 
