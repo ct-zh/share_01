@@ -24,7 +24,6 @@ func (b *BPTree) splitNode(parent Position, beSplitNode Position, i int) Positio
 		newNode.key[index1] = beSplitNode.key[index2]
 		beSplitNode.key[index2] = -1
 		newNode.keyNum++
-		//beSplitNode.keyNum--
 		index2++
 		index1++
 	}
