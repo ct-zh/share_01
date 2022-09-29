@@ -1,6 +1,10 @@
 package btree
 
-func (b *BPTree) splitNode(Parent Position, beSplitNode Position, i int) Position {
+// splitNode
+// parent: 父节点
+// beSplitNode: 当前分裂的节点
+// i: 当前节点在父节点的位置
+func (b *BPTree) splitNode(parent Position, beSplitNode Position, i int) Position {
 	NewNode := mallocNewNode(beSplitNode.isLeaf)
 
 	index1 := 0
@@ -21,16 +25,16 @@ func (b *BPTree) splitNode(Parent Position, beSplitNode Position, i int) Positio
 		index1++
 	}
 
-	if Parent != nil {
-		b.insertNode(Parent, NewNode, i+1)
+	if parent != nil {
+		b.insertNode(parent, NewNode, i+1)
 		// parent > limit 时的递归split recurvie中实现
 	} else {
 		// 如果是X是根，那么创建新的根并返回
-		Parent = mallocNewNode(false)
-		b.insertNode(Parent, beSplitNode, 0)
-		b.insertNode(Parent, NewNode, 1)
-		b.root = Parent
-		return Parent
+		parent = mallocNewNode(false)
+		b.insertNode(parent, beSplitNode, 0)
+		b.insertNode(parent, NewNode, 1)
+		b.root = parent
+		return parent
 	}
 
 	return beSplitNode
@@ -54,22 +58,19 @@ func (b *BPTree) mergeNode(Parent Position, X Position, S Position, i int) Posit
 }
 
 // findSibling  寻找一个兄弟节点，其存储的关键字未满，若左右都满返回nil
-func findSibling(Parent Position, i int) Position {
-	var Sibling Position
-	var upperLimit int
-	upperLimit = M
-	Sibling = nil
+func findSibling(parent Position, i int) (sibling Position) {
+	upperLimit := M
+	sibling = nil
 	if i == 0 {
-		if Parent.children[1].keyNum < upperLimit {
-
-			Sibling = Parent.children[1]
+		if parent.children[1].keyNum < upperLimit {
+			sibling = parent.children[1]
 		}
-	} else if Parent.children[i-1].keyNum < upperLimit {
-		Sibling = Parent.children[i-1]
-	} else if i+1 < Parent.keyNum && Parent.children[i+1].keyNum < upperLimit {
-		Sibling = Parent.children[i+1]
+	} else if parent.children[i-1].keyNum < upperLimit {
+		sibling = parent.children[i-1]
+	} else if i+1 < parent.keyNum && parent.children[i+1].keyNum < upperLimit {
+		sibling = parent.children[i+1]
 	}
-	return Sibling
+	return sibling
 }
 
 // FindSiblingKeyNumM2 查找兄弟节点，其关键字数大于M/2 ;没有返回nil j用来标识是左兄还是右兄
