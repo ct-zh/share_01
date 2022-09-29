@@ -1,38 +1,43 @@
 package btree
 
+import "fmt"
+
 // splitNode
 // parent: 父节点
 // beSplitNode: 当前分裂的节点
 // i: 当前节点在父节点的位置
 func (b *BPTree) splitNode(parent Position, beSplitNode Position, i int) Position {
-	NewNode := mallocNewNode(beSplitNode.isLeaf)
+	fmt.Printf("start split: parent: %v currentNode: %v key: %d\n", parent, beSplitNode, i)
+
+	newNode := mallocNewNode(beSplitNode.isLeaf) // 新分裂出来的叶子节点
 
 	index1 := 0
 	index2 := beSplitNode.keyNum / 2
 	for index2 < beSplitNode.keyNum {
-		if beSplitNode.isLeaf == false { //Internal node
-			NewNode.children[index1] = beSplitNode.children[index2]
+		if beSplitNode.isLeaf == false {
+			newNode.children[index1] = beSplitNode.children[index2]
 			beSplitNode.children[index2] = nil
 		} else {
-			NewNode.leafNode.data[index1] = beSplitNode.leafNode.data[index2]
+			newNode.leafNode.data[index1] = beSplitNode.leafNode.data[index2]
 			beSplitNode.leafNode.data[index2] = nil
 		}
-		NewNode.key[index1] = beSplitNode.key[index2]
+		newNode.key[index1] = beSplitNode.key[index2]
 		beSplitNode.key[index2] = -1
-		NewNode.keyNum++
-		beSplitNode.keyNum--
+		newNode.keyNum++
+		//beSplitNode.keyNum--
 		index2++
 		index1++
 	}
+	beSplitNode.keyNum = beSplitNode.keyNum - newNode.keyNum
 
 	if parent != nil {
-		b.insertNode(parent, NewNode, i+1)
+		b.insertNode(parent, newNode, i+1)
 		// parent > limit 时的递归split recurvie中实现
 	} else {
 		// 如果是X是根，那么创建新的根并返回
 		parent = mallocNewNode(false)
 		b.insertNode(parent, beSplitNode, 0)
-		b.insertNode(parent, NewNode, 1)
+		b.insertNode(parent, newNode, 1)
 		b.root = parent
 		return parent
 	}
