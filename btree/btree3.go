@@ -286,7 +286,7 @@ func (b *BPTree) removeElement(isData bool, Parent Position, X Position, posAtPa
 		}
 
 		X.key[keyNum-1] = IntMin
-		X.leafNode.data[keyNum-1] = IntMin
+		X.leafNode.data[keyNum-1] = nil
 		Parent.key[posAtParent] = X.key[0]
 		X.keyNum--
 	} else {

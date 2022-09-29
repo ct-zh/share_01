@@ -11,7 +11,7 @@ func (b *BPTree) splitNode(Parent Position, beSplitNode Position, i int) Positio
 			beSplitNode.children[index2] = nil
 		} else {
 			NewNode.leafNode.data[index1] = beSplitNode.leafNode.data[index2]
-			beSplitNode.leafNode.data[index2] = -1
+			beSplitNode.leafNode.data[index2] = nil
 		}
 		NewNode.key[index1] = beSplitNode.key[index2]
 		beSplitNode.key[index2] = -1
